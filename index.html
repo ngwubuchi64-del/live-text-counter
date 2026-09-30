@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Word & Character Counter</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 40px 15px; text-align: center; }
+        .box { background: white; max-width: 500px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #007bff; }
+        h2 { color: #333; margin-top: 0; }
+        p { color: #666; font-size: 14px; margin-bottom: 20px; }
+        textarea { width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; resize: vertical; }
+        textarea:focus { border-color: #007bff; outline: none; }
+        .stats-container { display: flex; justify-content: space-around; margin-top: 20px; }
+        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 8px; width: 40%; border: 1px solid #e9ecef; }
+        .stat-num { font-size: 28px; font-weight: bold; color: #007bff; display: block; }
+        .stat-label { font-size: 12px; color: #6c757d; text-transform: uppercase; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>📝 Live Text Counter</h2>
+        <p>Type or paste your text below to instantly see the word and character count.</p>
+        
+        <!-- The text area listens directly to what the user types -->
+        <textarea id="textInput" rows="8" placeholder="Start typing your text here..." oninput="countText()"></textarea>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <span id="wordCount" class="stat-num">0</span>
+                <span class="stat-label">Words</span>
+            </div>
+            <div class="stat-card">
+                <span id="charCount" class="stat-num">0</span>
+                <span class="stat-label">Characters</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logic runs instantly on every keypress
+        function countText() {
+            let text = document.getElementById('textInput').value;
+            
+            // 1. Character Count Logic
+            document.getElementById('charCount').innerText = text.length;
+            
+            // 2. Word Count Logic
+            let cleanText = text.trim();
+            if (cleanText === "") {
+                document.getElementById('wordCount').innerText = 0;
+                return;
+            }
+            
+            // Splits the text variables wherever there is a blank space
+            let wordArray = cleanText.split(/\s+/);
+            document.getElementById('wordCount').innerText = wordArray.length;
+        }
+    </script>
+
+</body>
+</html>
