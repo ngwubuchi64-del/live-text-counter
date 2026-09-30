@@ -11,7 +11,17 @@
         p { color: #666; font-size: 14px; margin-bottom: 20px; }
         textarea { width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; resize: vertical; }
         textarea:focus { border-color: #007bff; outline: none; }
-        .stats-container { display: flex; justify-content: space-around; margin-top: 20px; }
+        
+        /* Layout styling wrapper for the utility buttons */
+        .btn-container { display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; }
+        button { color: white; border: none; padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; flex: 1; box-sizing: border-box; }
+        
+        .copy-btn { background: #007bff; }
+        .copy-btn:hover { background: #0056b3; }
+        .clear-btn { background: #6c757d; }
+        .clear-btn:hover { background: #5a6268; }
+        
+        .stats-container { display: flex; justify-content: space-around; margin-top: 25px; }
         .stat-card { background: #f8f9fa; padding: 15px; border-radius: 8px; width: 40%; border: 1px solid #e9ecef; }
         .stat-num { font-size: 28px; font-weight: bold; color: #007bff; display: block; }
         .stat-label { font-size: 12px; color: #6c757d; text-transform: uppercase; font-weight: bold; }
@@ -23,8 +33,13 @@
         <h2>📝 Live Text Counter</h2>
         <p>Type or paste your text below to instantly see the word and character count.</p>
         
-        <!-- The text area listens directly to what the user types -->
         <textarea id="textInput" rows="8" placeholder="Start typing your text here..." oninput="countText()"></textarea>
+        
+        <!-- Two modular utility buttons snapped clean below the text window -->
+        <div class="btn-container">
+            <button id="copyBtn" class="copy-btn" onclick="copyText()">📋 Copy Text</button>
+            <button class="clear-btn" onclick="clearWorkspace()">🧹 Clear Text</button>
+        </div>
         
         <div class="stats-container">
             <div class="stat-card">
@@ -39,23 +54,43 @@
     </div>
 
     <script>
-        // Logic runs instantly on every keypress
         function countText() {
             let text = document.getElementById('textInput').value;
-            
-            // 1. Character Count Logic
             document.getElementById('charCount').innerText = text.length;
             
-            // 2. Word Count Logic
             let cleanText = text.trim();
             if (cleanText === "") {
                 document.getElementById('wordCount').innerText = 0;
                 return;
             }
             
-            // Splits the text variables wherever there is a blank space
             let wordArray = cleanText.split(/\s+/);
             document.getElementById('wordCount').innerText = wordArray.length;
+        }
+
+        // New feature block: Copies the main input text box to the system clipboard
+        function copyText() {
+            let text = document.getElementById('textInput').value;
+            if (text.trim() === "") {
+                alert("Please type some text first before trying to copy!");
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                let btn = document.getElementById('copyBtn');
+                btn.innerText = "✅ Copied!";
+                setTimeout(() => {
+                    btn.innerText = "📋 Copy Text";
+                }, 2000); // Resets the button text back to baseline after 2 seconds
+            }).catch(err => {
+                alert("Unable to copy automatically!");
+            });
+        }
+
+        function clearWorkspace() {
+            document.getElementById('textInput').value = "";
+            document.getElementById('wordCount').innerText = "0";
+            document.getElementById('charCount').innerText = "0";
         }
     </script>
 
